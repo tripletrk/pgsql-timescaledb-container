@@ -1,8 +1,8 @@
 PostgreSQL container images
 ========================
 
-This repository contains Dockerfiles for PostgreSQL images for OpenShift.
-Users can choose between RHEL, Fedora and CentOS based images.
+This repository contains Dockerfiles for PostgreSQL images with TimescaleDB for OpenShift.
+Users can choose between RHE and CentOS based images.
 
 For more information about using these images with OpenShift, please see the
 official [OpenShift Documentation](https://docs.openshift.org/latest/using_images/db_images/postgresql.html).
@@ -33,18 +33,18 @@ Choose either the CentOS7 or RHEL7 based image:
 
 *  **RHEL7 based image**
 
-    These images are available in the [Red Hat Container Catalog](https://access.redhat.com/containers/#/registry.access.redhat.com/rhscl/postgresql-10-rhel7).
+    These images are available in the [Red Hat Container Catalog](https://access.redhat.com/containers/#/registry.redhat.io/5121366|bfu/postgresql-10-rhel7).
     To download it run:
     ```
-    docker pull registry.access.redhat.com/rhscl/postgresql-10-rhel7
+    docker pull registry.redhat.io/5121366|bfu/postgresql-10-rhel7
     ```
 
     To build a RHEL7 based image, you need to run Docker build on a properly
     subscribed RHEL machine.
 
     ```
-    $ git clone --recursive https://github.com/sclorg/postgresql-container.git
-    $ cd postgresql
+    $ git clone --recursive https://github.com/tripletrk/pgsql-timescaledb-container.git
+    $ cd pgsql-timescaledb-container
     $ make build TARGET=rhel7 VERSIONS=10
     ```
 
@@ -53,14 +53,14 @@ Choose either the CentOS7 or RHEL7 based image:
     These images are available on DockerHub. To download it run:
 
     ```
-    $ docker pull centos/postgresql-10-centos7
+    $ docker pull tripletrk/postgresql-10-centos7
     ```
 
     To build a PostgreSQL image from scratch run:
 
     ```
-    $ git clone --recursive https://github.com/sclorg/postgresql-container.git
-    $ cd postgresql
+    $ git clone --recursive https://github.com/tripletrk/pgsql-timescaledb-container.git
+    $ cd pgsql-timescaledb-container
     $ make build TARGET=centos7 VERSIONS=10
     ```
 
