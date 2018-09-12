@@ -8,6 +8,9 @@
 # Listen on all interfaces.
 listen_addresses = '*'
 
+# Enables timescaledb plugin 
+shared_preload_libraries = 'timescaledb'
+
 # Determines the maximum number of concurrent connections to the database server. Default: 100
 max_connections = ${POSTGRESQL_MAX_CONNECTIONS}
 

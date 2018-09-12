@@ -16,10 +16,10 @@ ENV POSTGRESQL_VERSION={{ spec.version }} \
     PGUSER=postgres \
     APP_DATA=/opt/app-root
 
-ENV SUMMARY="PostgreSQL is an advanced Object-Relational database management system" \
-    DESCRIPTION="PostgreSQL is an advanced Object-Relational database management system (DBMS). \
+ENV SUMMARY="TimescaleDB is an open source time-series database powered by PostgreSQL" \
+    DESCRIPTION="TimescaleDB is an open source time-series database powered by PostgreSQL. \
 The image contains the client and server programs that you'll need to \
-create, run, maintain and access a PostgreSQL DBMS server."
+create, run, maintain and access a Timescale|PostgreSQL DBMS server."
 
 LABEL summary="$SUMMARY" \
       description="$DESCRIPTION" \
@@ -27,7 +27,7 @@ LABEL summary="$SUMMARY" \
       io.k8s.display-name="PostgreSQL {{ spec.version }}" \
       io.openshift.expose-services="5432:postgresql" \
       io.openshift.tags="{{ spec.openshift_tags }}" \
-      name="{{ spec.org }}/postgresql-{{ spec.short }}-{{ spec.prod }}" \
+      name="tripletrk/postgresql-{{ spec.short }}-{{ spec.prod }}" \
       com.redhat.component="{{ spec.redhat_component }}" \
 {% if spec.version not in ["9.4", "9.5", "9.6"] %}
       version="1" \
@@ -36,8 +36,8 @@ LABEL summary="$SUMMARY" \
 {% else %}
       version="{{ spec.version }}" \
 {% endif %}
-      usage="docker run -d --name postgresql_database -e POSTGRESQL_USER=user -e POSTGRESQL_PASSWORD=pass -e POSTGRESQL_DATABASE=db -p 5432:5432 {{ spec.org }}/postgresql-{{ spec.short }}-{{ spec.prod }}" \
-      maintainer="SoftwareCollections.org <sclorg@redhat.com>"
+      usage="docker run -d --name postgresql_database -e POSTGRESQL_USER=user -e POSTGRESQL_PASSWORD=pass -e POSTGRESQL_DATABASE=db -p 5432:5432 tripletrk/postgresql-{{ spec.short }}-{{ spec.prod }}" \
+      maintainer="Tripletrk, based on SoftwareCollections.org <tripletrk@bonafide.consulting>"
 
 EXPOSE 5432
 
@@ -63,7 +63,9 @@ RUN {{ spec.environment_setup }}
     {% endif %}
   {% endif %}
 {% endif %}
-    INSTALL_PKGS="rsync tar gettext bind-utils nss_wrapper {{ spec.pkgs }}" && \
+    yum-config-manager --add-repo https://download.postgresql.org/pub/repos/yum/{{ spec.version }}/redhat/rhel-7-x86_64 && \
+    echo gpgcheck=0 >> /etc/yum.repos.d/download.postgresql.org_pub_repos_yum_{{ spec.version }}_redhat_rhel-7-x86_64.repo && \
+    INSTALL_PKGS="rsync tar gettext bind-utils nss_wrapper {{ spec.pkgs }} timescaledb_$(echo {{ spec.version }} | sed 's/\.//')" && \
     yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
@@ -71,7 +73,9 @@ RUN {{ spec.environment_setup }}
     test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" && \
     mkdir -p /var/lib/pgsql/data && \
     /usr/libexec/fix-permissions /var/lib/pgsql && \
-    /usr/libexec/fix-permissions /var/run/postgresql
+    /usr/libexec/fix-permissions /var/run/postgresql && \
+    ln -s /usr/pgsql-{{ spec.version}}/lib/timescale*  /opt/rh/{{ spec.enabled_collection }}/root/usr/lib64/pgsql && \
+    ln -s /usr/pgsql-{{ spec.version}}/share/extension/timescale*  /opt/rh/{{ spec.enabled_collection }}/root/usr/share/pgsql/extension 
 
 # Get prefix path and path to scripts rather than hard-code them in scripts
 ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
