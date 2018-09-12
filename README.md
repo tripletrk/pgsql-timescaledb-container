@@ -1,8 +1,8 @@
 PostgreSQL container images
 ========================
 
-This repository contains Dockerfiles for PostgreSQL images with TimescaleDB for OpenShift.
-Users can choose between RHE and CentOS based images.
+This repository contains Dockerfiles for TimescaleDB images (powered by PostgreSQL) for OpenShift.
+Users can choose between RHEL and CentOS based images[RHEL not tested yet].
 
 For more information about using these images with OpenShift, please see the
 official [OpenShift Documentation](https://docs.openshift.org/latest/using_images/db_images/postgresql.html).
@@ -15,13 +15,12 @@ For more information about concepts used in these container images, see the
 
 Versions
 ---------------
-PostgreSQL versions currently supported are:
-* [postgresql-9.5](https://github.com/sclorg/postgresql-container/tree/generated/9.5)
-* [postgresql-9.6](https://github.com/sclorg/postgresql-container/tree/generated/9.6)
-* [postgresql-10](https://github.com/sclorg/postgresql-container/tree/generated/10)
+TimescaleDB and PostgreSQL versions currently supported are:
+* [TimescaleDB 0.11 by postgresql-9.6](https://github.com/tripletrk/pgsql-timescaledb-container/tree/generated/9.6)
+* [TimescaleDB 0.11 by postgresql-10](https://github.com/tripletrk/pgsql-timescaledb-container/tree/generated/10)
 
 RHEL versions currently supported are:
-* RHEL7
+* RHEL7 (not tested yet)
 
 CentOS versions currently supported are:
 * CentOS7
@@ -31,9 +30,10 @@ Installation
 ----------------------
 Choose either the CentOS7 or RHEL7 based image:
 
-*  **RHEL7 based image**
+*  **RHEL7 based image**(not available yet)
 
-    These images are available in the [Red Hat Container Catalog](https://access.redhat.com/containers/#/registry.redhat.io/5121366|bfu/postgresql-10-rhel7).
+    These images are available in the [Red Hat Container Catalog].
+
     To download it run:
     ```
     docker pull registry.redhat.io/5121366|bfu/postgresql-10-rhel7
@@ -74,9 +74,6 @@ In this repository [distgen](https://github.com/devexp-db/distgen/) is used for 
 
 Usage
 ---------------------------------
-
-For information about usage of Dockerfile for PostgreSQL 9.5,
-see [usage documentation](https://github.com/sclorg/postgresql-container/tree/generated/9.5).
 
 For information about usage of Dockerfile for PostgreSQL 9.6,
 see [usage documentation](https://github.com/sclorg/postgresql-container/tree/generated/9.6).
